@@ -6,13 +6,19 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(135deg, #181a20 60%, #232946 100%);
   color: #e0e0e0;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #181a20;
+  min-height: 100vh;
+}
+
+.main-header {
+  background: linear-gradient(90deg, #232946 60%, #393e4f 100%);
+  color: #e0e0e0;
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 4px 16px rgba(35,41,70,0.18);
+  margin-bottom: 40px;
+  padding: 0 0 24px 0;
 }
 
 header {
@@ -25,7 +31,32 @@ header {
 }
 
 header h1 {
-  margin-bottom: 10px;
+  font-size: 2.2rem;
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+
+header h2 {
+  font-size: 1.2rem;
+  color: #b8c1ec;
+  font-weight: 400;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 32px 0 0 0;
+}
+
+.school-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  box-shadow: 0 2px 12px #232946;
+  border: 3px solid #eebbc3;
+  background: #fff;
 }
 
 main {
@@ -39,6 +70,13 @@ main {
   main {
     grid-template-columns: 2fr 1fr;
   }
+}
+
+.activities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  margin-top: 18px;
 }
 
 section {
@@ -58,28 +96,50 @@ section h3 {
 }
 
 .activity-card {
-  margin-bottom: 15px;
-  padding: 15px;
-  border: 1px solid #393e4f;
-  border-radius: 5px;
-  background-color: #1a1a2e;
+  background: #1a1a2e;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(35,41,70,0.18);
+  border: 1.5px solid #393e4f;
+  padding: 24px 20px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: transform 0.15s, box-shadow 0.15s;
+  position: relative;
+}
+
+.activity-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 8px 32px rgba(35,41,70,0.28);
 }
 
 .activity-card h4 {
-  margin-bottom: 10px;
   color: #eebbc3;
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.activity-card h4::before {
+  content: '\1F393';
+  font-size: 1.2em;
+  margin-right: 6px;
 }
 
 .activity-card p {
-  margin-bottom: 8px;
+  margin-bottom: 7px;
+  color: #b8c1ec;
 }
 
-.activity-participants {
-  margin-top: 12px;
-  padding: 10px 12px;
-  background-color: #232946;
-  border-radius: 4px;
+.activity-card .activity-participants {
+  margin-top: 10px;
+  background: #232946;
+  border-radius: 6px;
   border: 1px solid #393e4f;
+  padding: 10px 12px;
+  width: 100%;
 }
 
 .activity-participants-title {
@@ -101,48 +161,109 @@ section h3 {
   font-size: 15px;
 }
 
-.form-group {
-  margin-bottom: 15px;
+.activity-card .signup-btn {
+  margin-top: 18px;
+  align-self: flex-end;
+  background: linear-gradient(90deg, #eebbc3 60%, #b8c1ec 100%);
+  color: #232946;
+  border: none;
+  padding: 10px 22px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(232,187,195,0.08);
+  transition: background 0.18s, color 0.18s;
 }
 
-.form-group label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+.activity-card .signup-btn:hover {
+  background: linear-gradient(90deg, #b8c1ec 60%, #eebbc3 100%);
+  color: #181a20;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(24,26,32,0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #232946;
+  border-radius: 12px;
+  padding: 32px 28px 24px 28px;
+  box-shadow: 0 8px 32px rgba(35,41,70,0.28);
+  min-width: 320px;
+  max-width: 95vw;
+  position: relative;
+  animation: modalIn 0.25s;
+}
+
+@keyframes modalIn {
+  from { transform: translateY(40px) scale(0.95); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.close-modal {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 2rem;
+  color: #eebbc3;
+  cursor: pointer;
+  transition: color 0.18s;
+}
+
+.close-modal:hover {
+  color: #b8c1ec;
+}
+
+#signup-form .form-group label {
   color: #eebbc3;
 }
 
-.form-group input,
-.form-group select {
-  width: 100%;
-  padding: 10px;
+#signup-form input[type="email"] {
+  background: #181a20;
+  color: #e0e0e0;
   border: 1px solid #393e4f;
   border-radius: 4px;
-  font-size: 16px;
-  background-color: #232946;
-  color: #e0e0e0;
+  padding: 10px;
+  width: 100%;
+  margin-bottom: 18px;
 }
 
-button {
-  background-color: #eebbc3;
+#signup-form button {
+  background: linear-gradient(90deg, #eebbc3 60%, #b8c1ec 100%);
   color: #232946;
   border: none;
-  padding: 10px 15px;
+  padding: 10px 22px;
   font-size: 16px;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(232,187,195,0.08);
+  transition: background 0.18s, color 0.18s;
 }
 
-button:hover {
-  background-color: #b8c1ec;
-  color: #232946;
+#signup-form button:hover {
+  background: linear-gradient(90deg, #b8c1ec 60%, #eebbc3 100%);
+  color: #181a20;
 }
 
 .message {
-  margin-top: 20px;
+  margin-top: 18px;
   padding: 10px;
   border-radius: 4px;
+  font-size: 1rem;
 }
 
 .success {

@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
 
-        // Participantes HTML
         let participantsHTML = '';
         if (details.participants && details.participants.length > 0) {
           participantsHTML = `
@@ -46,15 +45,22 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
           ${participantsHTML}
+          <button class="signup-btn" data-activity="${name}">Sign Up</button>
         `;
 
         activitiesList.appendChild(activityCard);
+      });
 
-        // Add option to select dropdown
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-        activitySelect.appendChild(option);
+      // Botón de inscripción abre el modal
+      document.querySelectorAll('.signup-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const activity = btn.getAttribute('data-activity');
+          document.getElementById('signup-modal').classList.remove('hidden');
+          document.getElementById('modal-activity-title').textContent = `Sign Up for ${activity}`;
+          document.getElementById('modal-activity').value = activity;
+          document.getElementById('message').classList.add('hidden');
+          document.getElementById('email').value = '';
+        });
       });
     } catch (error) {
       activitiesList.innerHTML = "<p>Failed to load activities. Please try again later.</p>";
@@ -62,12 +68,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Modal close
+  document.getElementById('close-modal').onclick = () => {
+    document.getElementById('signup-modal').classList.add('hidden');
+  };
+  window.onclick = (event) => {
+    if (event.target === document.getElementById('signup-modal')) {
+      document.getElementById('signup-modal').classList.add('hidden');
+    }
+  };
+
   // Handle form submission
   signupForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-
     const email = document.getElementById("email").value;
-    const activity = document.getElementById("activity").value;
+    const activity = document.getElementById("modal-activity").value;
 
     try {
       const response = await fetch(
@@ -81,11 +96,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (response.ok) {
         messageDiv.textContent = result.message;
-        messageDiv.className = "success";
+        messageDiv.className = "success message";
         signupForm.reset();
+        setTimeout(() => {
+          document.getElementById('signup-modal').classList.add('hidden');
+        }, 1200);
+        fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
-        messageDiv.className = "error";
+        messageDiv.className = "error message";
       }
 
       messageDiv.classList.remove("hidden");

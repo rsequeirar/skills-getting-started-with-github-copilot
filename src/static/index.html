@@ -7,39 +7,41 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header>
-      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png" alt="School Logo" style="width:60px;height:60px;margin-bottom:10px;filter:drop-shadow(0 2px 6px #232946);">
-      <h1>Mergington High School</h1>
-      <h2>Extracurricular Activities</h2>
+    <header class="main-header">
+      <div class="header-content">
+        <img class="school-avatar" src="https://cdn-icons-png.flaticon.com/512/3135/3135768.png" alt="School Logo">
+        <div>
+          <h1>Mergington High School</h1>
+          <h2>Extracurricular Activities</h2>
+        </div>
+      </div>
     </header>
 
     <main>
       <section id="activities-container">
         <h3>Available Activities</h3>
-        <div id="activities-list">
+        <div id="activities-list" class="activities-grid">
           <!-- Activities will be loaded here -->
           <p>Loading activities...</p>
         </div>
       </section>
 
-      <section id="signup-container">
-        <h3>Sign Up for an Activity</h3>
-        <form id="signup-form">
-          <div class="form-group">
-            <label for="email">Student Email:</label>
-            <input type="email" id="email" required placeholder="your-email@mergington.edu" />
-          </div>
-          <div class="form-group">
-            <label for="activity">Select Activity:</label>
-            <select id="activity" required>
-              <option value="">-- Select an activity --</option>
-              <!-- Activity options will be loaded here -->
-            </select>
-          </div>
-          <button type="submit">Sign Up</button>
-        </form>
-        <div id="message" class="hidden"></div>
-      </section>
+      <!-- Modal para inscripción -->
+      <div id="signup-modal" class="modal hidden">
+        <div class="modal-content">
+          <span class="close-modal" id="close-modal">&times;</span>
+          <h3 id="modal-activity-title">Sign Up for Activity</h3>
+          <form id="signup-form">
+            <div class="form-group">
+              <label for="email">Student Email:</label>
+              <input type="email" id="email" required placeholder="your-email@mergington.edu" />
+            </div>
+            <input type="hidden" id="modal-activity" />
+            <button type="submit">Sign Up</button>
+          </form>
+          <div id="message" class="hidden"></div>
+        </div>
+      </div>
     </main>
 
     <footer>
